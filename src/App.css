@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+}.navbar{
+  display: flex;
+  flex-direction: space-between;
+  gap:600px;
+  margin-left: 70px;
+  
+}.navbar ol{
+  display: flex;
+  flex-direction: space-between;
+  gap: 30px;
+  list-style: none;
+  padding: 45px;
+  width:4000px;
+  margin: 0auto;
+}.section1 img{
+    width:800px;
+}.section1 p{
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  
+}.paragraphs{
+  border: 2px solid black;
+  width:1000px;
+  padding: px;
+  margin-left: 200px;
+  
+}.card{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  width:350px;
+  margin: 0 auto;
+  margin: 0px;
+  flex-wrap: nowrap;
+}
+  
+
+
