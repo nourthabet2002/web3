@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-const Section3 = ({add,newperson,setnewperson}) => {
+const Section3 = ({add,newperson,setnewperson,dele,deleteperson,setdeleteperson}) => {
   return (
     <div className="section3">
       <label >name</label>
@@ -15,6 +15,7 @@ const Section3 = ({add,newperson,setnewperson}) => {
       <label >tasks</label>
       <input type="text"onChange={(e)=>setnewperson({...newpersons,tasks:e.target.value})} />
       <button onClick={()=>add(newperson)} >ADD</button>
+      <button onClick={()=>dele(deleteperson)} >delete</button>
 
 
 
