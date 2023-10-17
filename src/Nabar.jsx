@@ -9,6 +9,9 @@ const Nabar = () => {
     <li>historique</li>
     <li>Rejoignz-nous</li>
     <li>actualité</li>
+    <li>persons</li>
+    <li>tasks</li>
+    
    </ol>
     </div>
   )
