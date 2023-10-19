@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import PersonForm from './Section3';
 import Section4 from './Section4';
+import Holiday from './Holiday';
 const App = () => {
   
   
@@ -16,6 +17,8 @@ const App = () => {
       <Route path= "/" element= {<PersonForm />} />
       <Route path= "/tasks" element= {<Section4/>} />
       <Route path= "/autres" element= {<Autres />} />
+      <Route path= "/Holiday" element= {<Holiday />} />
+
       </Routes>
       
 
