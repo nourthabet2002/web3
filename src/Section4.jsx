@@ -16,7 +16,7 @@ const Section4 = () => {
 
   const addTask = () => {
     axios
-      .post("http://your-server-url.com/api/tasks", task)
+      .post("http://localhost:3005/add", task)
       .then(response => {
         console.log("Task added:", response.data); // Assuming the server responds with the added task
         // Reset the form fields after adding a task

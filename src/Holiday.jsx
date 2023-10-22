@@ -5,33 +5,28 @@ import axios from 'axios';
 const Holiday = () => {
   const navigate = useNavigate();
   const [holidayRequest, setHolidayRequest] = useState({
-    FirstName: "",
-    LastName: "",
-    position: "",
-    numberOfDays: ""
+    personId: "",
+    duration:""
+    
   });
+
 
   const handleInputChange = (field, value) => {
     setHolidayRequest({ ...holidayRequest, [field]: value });
   };
 
-  const addHolidayRequest = () => {
+  const addHolidayRequest = (personId,duration) => {
     // Define the URL for your server's endpoint
-    const apiUrl = "http://your-server-url.com/api/holiday-requests";
+    const apiUrl = "http://localhost:3005/holiday/add";
 
     // Send a POST request to the server using Axios
+
     axios
-      .post(apiUrl, holidayRequest)
+      .post(apiUrl, {"personId":personId,"duration":duration})
       .then(response => {
         console.log("Holiday request added successfully.");
         console.log("Response:", response.data); // Print the response data from the server
         // Reset the form fields after adding a request
-        setHolidayRequest({
-          FirstName: "",
-          LastName: "",
-          position: "",
-          numberOfDays: ""
-        });
       })
       .catch(error => {
         console.error("Failed to add holiday request:", error);
@@ -70,7 +65,7 @@ const Holiday = () => {
         onChange={(e) => handleInputChange("numberOfDays", e.target.value)}
       />
 
-      <button onClick={addHolidayRequest}>Add</button>
+      <button onClick={addHolidayRequest()}>Add</button>
     </div>
   );
 };
