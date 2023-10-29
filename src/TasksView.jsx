@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Section4 = () => {
+const TasksView = () => {
   const navigate = useNavigate();
+
+
+  const [tasks, setTasks] = useState([]);
+
+
   const [task, setTask] = useState({
     name: "",
     description: "",
@@ -16,7 +21,7 @@ const Section4 = () => {
 
   const addTask = () => {
     axios
-      .post("http://localhost:3005/add", task)
+      .post("http://localhost:3005/tasks/add", task)
       .then(response => {
         console.log("Task added:", response.data); // Assuming the server responds with the added task
         // Reset the form fields after adding a task
@@ -31,7 +36,24 @@ const Section4 = () => {
         // Handle the error appropriately, e.g., display an error message
       });
   };
+  // get data //
+  const loadTasks = () => {
+    const apiUrl = "http://localhost:3005/tasks"; // Replace with your actual API endpoint for fetching persons
 
+    axios.get(apiUrl)
+      .then(response => {
+        setTasks(response.data);
+      })
+      .catch(error => {
+        console.error("Failed to fetch persons.");
+        console.error("Error:", error); // Handle the error appropriately.
+      });
+  };
+  //
+  useEffect(() => {
+    loadTasks(); 
+  }, []);
+  //
   return (
     <div className='Section4'>
       <label>Name</label>
@@ -50,7 +72,7 @@ const Section4 = () => {
 
       <label>Deadline</label>
       <input
-        type="text"
+        type="date"
         value={task.deadline}
         onChange={(e) => handleInputChange("deadline", e.target.value)}
       />
@@ -58,8 +80,30 @@ const Section4 = () => {
       <button onClick={addTask}>Add</button>
       <button>Delete</button>
       <button onClick={() => navigate("/tasks")}>Tasks</button>
+
+      {tasks.length > 0 ? (
+        <div>
+          <h2>List of Tasks</h2>
+          <ul>
+            {tasks.map((task) => (
+              <li key={task._id}>
+                <h3>{task.name}</h3>
+                <p>Description: {task.deadline}</p>
+                <p>Deadline: {new Date(task.deadline).toLocaleDateString()}</p>
+
+
+               
+              
+             
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>No tasks to display. Check your API endpoint and data.</p>
+      )}
     </div>
   );
 }
 
-export default Section4;
+export default TasksView;

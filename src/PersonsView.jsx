@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const PersonForm = () => {
+const PersonsView = () => {
   const [persons, setPersons] = useState([]);
 
   const [newPerson, setNewPerson] = useState({
@@ -10,17 +10,18 @@ const PersonForm = () => {
     salary: "",
     position: "",
     joineddate: "",
-    tasks: ""
+    tasks: "",
   });
 
   const loadPersons = () => {
     const apiUrl = "http://localhost:3005/persons"; // Replace with your actual API endpoint for fetching persons
 
-    axios.get(apiUrl)
-      .then(response => {
+    axios
+      .get(apiUrl)
+      .then((response) => {
         setPersons(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to fetch persons.");
         console.error("Error:", error); // Handle the error appropriately.
       });
@@ -39,22 +40,27 @@ const PersonForm = () => {
       salary: newPerson.salary,
       position: newPerson.position,
       joineddate: newPerson.joineddate,
-      tasks: newPerson.tasks
+     
     };
 
     // Send a POST request using Axios
-    axios.post(apiUrl, personData)
-      .then(response => {
+    axios
+      .post("http://localhost:3005/add", personData)
+      .then((response) => {
         console.log("Person added successfully.");
-        console.log("Response:", response.data); // Print the response data
-        // You can handle success as needed.
-
-        // After successfully adding a person, reload the list of persons
+        setNewPerson({
+          name: "",
+          salary: "",
+          position: "",
+          joineddate: "",
+          tasks: "",
+        });
         loadPersons();
       })
-      .catch(error => {
-        console.error("Failed to add person.");
-        console.error("Error:", error); // Print the error details
+
+      .catch((error) => {
+        console.error("Failed to add person:", error);
+
         // Handle the error appropriately.
       });
   };
@@ -65,11 +71,11 @@ const PersonForm = () => {
     loadPersons(); // Call loadPersons when the component is mounted
   }, []); // Empty dependency array means it runs once on mount
 
-  const handlePermissionClick = (personId,duration) => {
+  const handlePermissionClick = (personId, duration) => {
     // Create an object to hold the permission data (if needed)
     const permissionData = {
       personId: personId,
-      duration: duration
+      duration: duration,
       // Add any other permission-related data here
     };
 
@@ -77,12 +83,13 @@ const PersonForm = () => {
     const permissionApiUrl = "http://localhost:3005/permissions"; // Replace with your actual permission API endpoint
 
     // Send a POST request to the permission API
-    axios.post(permissionApiUrl, permissionData)
-      .then(response => {
+    axios
+      .post(permissionApiUrl, permissionData)
+      .then((response) => {
         console.log(`Permission granted for person with ID: ${personId}`);
         // You can handle the response from the server if needed.
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to grant permission.");
         console.error("Error:", error); // Handle the error appropriately.
       });
@@ -99,35 +106,60 @@ const PersonForm = () => {
     setShowHolidayInput(null);
   };
 
-  const sendHolidayRequest = (personId,duration) => {
-   console.log(`Person ID: ${personId}, Duration: ${holidayDuration}`);
+  const sendHolidayRequest = (personId, numberOfdays) => {
+    console.log(`Person ID: ${personId}, Duration: ${holidayDuration}`);
 
     // Define the URL for your server's endpoint
     const apiUrl = "http://localhost:3005/holiday/add";
 
     // Send a POST request to the server using Axios
-  
+
     axios
-      .post(apiUrl, {"personId" : personId,"duration": duration})
-      .then(response => {
+      .post(apiUrl, { personId: personId, numberOfdays: numberOfdays })
+      .then((response) => {
         console.log("Holiday request added successfully.");
         console.log("Response:", response.data); // Print the response data from the server
         // Reset the form fields after adding a request
-      
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to add holiday request:", error);
         // Handle the error appropriately, e.g., display an error message
       });
-  
 
     closeHolidayInput();
   };
 
-
   return (
     <div className="section3">
-      {/* ... (input fields and buttons) */}
+    
+      <label>Name</label>
+      <input
+        type="text"
+        value={newPerson.name}
+        onChange={(e) => handleInputChange("name", e.target.value)}
+      />
+ <label>Position</label>
+      <input
+        type="text"
+        value={newPerson.position}
+        onChange={(e) => handleInputChange("position", e.target.value)}
+      />
+
+      <label>Salary</label>
+      <input
+        type="number"
+        value={newPerson.salary}
+        onChange={(e) => handleInputChange("salary", e.target.value)}
+      />
+
+      <label>Joined date</label>
+      <input
+        type="date"
+        value={newPerson.joineddate}
+        onChange={(e) => handleInputChange("joineddate", e.target.value)}
+      />
+
+<button onClick={addPerson}>Add</button>
       {persons.length > 0 ? (
         <div>
           <h2>List of Persons</h2>
@@ -137,7 +169,10 @@ const PersonForm = () => {
                 <h3>{person.name}</h3>
                 <p>Salary: {person.salary}</p>
                 <p>Position: {person.position}</p>
-                <p>Joined Date: {new Date(person.joinedDate).toLocaleDateString()}</p>
+                <p>
+                  Joined Date:{" "}
+                  {new Date(person.joinedDate).toLocaleDateString()}
+                </p>
                 {showHolidayInput === person._id ? (
                   <div>
                     <label htmlFor="holidayDuration">Holidays Duration:</label>
@@ -148,11 +183,20 @@ const PersonForm = () => {
                       value={holidayDuration} // Set the initial value
                       onChange={(e) => setHolidayDuration(e.target.value)}
                     />
-                    <button onClick={() => sendHolidayRequest(person._id,holidayDuration)}>Send</button>
+                   
+                    <button
+                      onClick={() =>
+                        sendHolidayRequest(person._id, holidayDuration)
+                      }
+                    >
+                      Send
+                    </button>
                     <button onClick={closeHolidayInput}>Cancel</button>
                   </div>
                 ) : (
-                  <button onClick={() => openHolidayInput(person._id)}>Permission</button>
+                  <button onClick={() => openHolidayInput(person._id)}>
+                    Permission
+                  </button>
                 )}
                 {/* You can display tasks or other information as needed */}
               </li>
@@ -165,7 +209,5 @@ const PersonForm = () => {
     </div>
   );
 };
-  
 
-
-export default PersonForm;
+export default PersonsView;

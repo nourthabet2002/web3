@@ -6,7 +6,7 @@ const Holiday = () => {
   const navigate = useNavigate();
   const [holidayRequest, setHolidayRequest] = useState({
     personId: "",
-    duration:""
+    numberOfdays:""
     
   });
 
@@ -15,14 +15,14 @@ const Holiday = () => {
     setHolidayRequest({ ...holidayRequest, [field]: value });
   };
 
-  const addHolidayRequest = (personId,duration) => {
+  const addHolidayRequest = (personId,numberOfdays) => {
     // Define the URL for your server's endpoint
     const apiUrl = "http://localhost:3005/holiday/add";
 
     // Send a POST request to the server using Axios
 
     axios
-      .post(apiUrl, {"personId":personId,"duration":duration})
+      .post(apiUrl, {"personId":personId,"numberOfdays":numberOfdays})
       .then(response => {
         console.log("Holiday request added successfully.");
         console.log("Response:", response.data); // Print the response data from the server

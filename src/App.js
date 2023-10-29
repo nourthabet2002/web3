@@ -4,9 +4,9 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import Autres from './Autres';
 import { useState } from 'react';
-import PersonForm from './Section3';
-import Section4 from './Section4';
+import TasksView from './TasksView';
 import Holiday from './Holiday';
+import PersonsView from './PersonsView';
 const App = () => {
   
   
@@ -14,8 +14,8 @@ const App = () => {
     <div className='App'>
       <Routes>
       <Route path= "/" element= {<Autres />} />
-      <Route path= "/tasks" element= {<Section4/>} />
-      <Route path= "/persons" element= {<PersonForm />} />
+      <Route path= "/tasks" element= {<TasksView/>} />
+      <Route path= "/persons" element= {<PersonsView />} />
       <Route path= "/Holiday" element= {<Holiday />} />
 
       </Routes>
